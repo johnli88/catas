@@ -1,0 +1,130 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST" enctype="multipart/form-data" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4" style="color:#1c08ca">
+                    <strong>SQL Server Feature Parity and Compatibility Assessment</strong></legend>
+                <div class="form-group">
+                    {{ form.assessname.label(class="form-control-label") }}
+
+                    {% if form.assessname.errors %}
+                        {{ form.assessname(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.assessname.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.assessname(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.filename.label(class="form-control-label") }}
+
+                    {% if form.filename.errors %}
+                        {{ form.filename(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.filename.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.filename(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.outputFolder.label(class="form-control-label") }}
+
+                    {% if form.outputFolder.errors %}
+                        {{ form.outputFolder(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.outputFolder.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.outputFolder(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.reportName.label(class="form-control-label") }}
+
+                    {% if form.reportName.errors %}
+                        {{ form.reportName(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.reportName.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.reportName(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.reportFormat.label(class="form-control-label") }}
+
+                    {% if form.reportFormat.errors %}
+                        {{ form.reportFormat(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.reportFormat.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.reportFormat(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.assessType.label(class="form-control-label") }}
+
+                    {% if form.assessType.errors %}
+                        {{ form.assessType(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.assessType.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.assessType(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.target.label(class="form-control-label") }}
+                    {% if form.target.errors %}
+                        {{ form.target(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.target.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.target(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+
+{% block sidebar %}
+
+<div id="sidebar" class="content-section">
+    <p style="color:#1d5221";> <strong> Config file name including path: </strong></p>
+    <article class="media content-section">
+              <div class="media-body">
+                    <div class="article-metadata">
+                        <input id="configFile" class="form-control" type="text" name="configFile" value="{{ configFileFullName }}"></input> 
+                        <label for="configFile"></label>
+                    </div>            
+              </div>
+    </article>
+    <button class="btn btn-primary saveConfigButton">Save</button>
+    <button class="btn btn-primary loadConfigButton" style="float: right">Load</button>
+</div>
+
+{% endblock sidebar %}

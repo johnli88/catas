@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!--
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm">
+    -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+    {% if title %}
+        <title>CATAS - {{ title }}</title>
+    {% else %}
+        <title>CATAS</title>
+    {% endif %}
+</head>
+<!--<style>
+  div {
+    background-color: lightgreen;
+    opacity: 0.3;
+  }
+</style>-->
+<body>
+  
+    <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="/">CATAS</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="{{ url_for('home') }}">Home</a>
+              <a class="nav-item nav-link" href="{{ url_for('validate') }}">Validate</a>
+              <a class="nav-item nav-link" href="{{ url_for('assess') }}">Assess</a>
+              <a class="nav-item nav-link" href="{{ url_for('collect') }}">Collect</a>
+              <a class="nav-item nav-link" href="{{ url_for('manage') }}">Manage</a>
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+              <a class="nav-item nav-link" href="https://www.compugen.com">
+                <img src="./static/compugen_black.jpg" alt="compugen_black.jpg" style="width:142px;height:42px;"></a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+  
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          <div style="margin-top:50px;">
+            {% block content %}
+            {% endblock %}
+          </div>
+        </div>
+
+
+        {% if sidebar %}
+          <div class="col-md-4">
+            {% if sidebar_title == 'manage' %}
+              <div class="content-section" style="margin-top:10px;">
+            {% else %}
+              <div class="content-section" style="margin-top:150px;">
+            {% endif %}
+              <h3 style="color:#1c08ca";>{{ sidebar_title }}</h3>
+              <p class='text-muted'> {{ sidebar_statement }} 
+                {% block sidebar %}
+                {% endblock %}
+              </p>
+            </div>
+          </div>
+        {% endif %}
+
+      </div>
+    </main>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='cost.js') }}"></script>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container-fluid padding">
+        <div class="row text-center">
+          <div class="col-md-4">
+            <a href="https://www.compugen.com">
+            <img src="static/compugen_simplifying.png" style="width:142px;height:42px;"> </a>
+            <hr class="light">
+            <p>1-800-387-5045</p>
+            <p>marketing@compugen.com</p>
+            <p>100 Via Renzo Drive</p>
+            <p>Richmond Hill, Ontario L4S 0B8</p>
+          </div>
+          <div class="col-md-4">
+              <img src="static/azure_migrate.png" style="width:152px;height:42px;">
+              <hr class="light">
+              <p> <a style="color:#e6e6e9" href="https://www.compugen.com/en/business-solutions/data-centre-cloud/cloud-computing/" target="_blank">Cloud Computing</a></p>
+              <p> <a style="color:#e6e6e9" href="https://www.compugen.com/en/business-solutions/data-centre-cloud/converged-datacentre/" target="_blank">Datacentre & Cloud</a></p>
+              <p> <a style="color:#e6e6e9" href="https://www.compugen.com/en/business-solutions/data-centre-cloud/server-virtualization/">Server Virtualization</a></p>
+              <p> <a style="color:#e6e6e9" href="https://www.compugen.com/en/business-solutions/strategy-planning-architecture/it-planning-roadmaps/">Architecture & Design</a></p>
+          </div>
+          <div class="col-md-4">
+            <img src="static/service.jpg" style="width:142px;height:42px;">
+            <hr class="light">
+            <p> Strategy & Planning</p>
+            <p>Assessment and Risks</p>
+            <p>Network and Security</p>
+            <p>Server and Database</p>
+          </div>
+          <div class="col-12">
+            <hr class="light">
+            <h5 style="color:#e6e6e9" > &copy; compugen.com</h5>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+
+
+  </body>
+</html>

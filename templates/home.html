@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2 style="color:#1c08ca";> <p> Compugen Assessment Tool for Azure SQL</p></h2>
+<h4> Please select one of actions: </h4>
+    {% for post in posts %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{{ url_for(post.page) }}">{{ post.action }}</a>
+              <small class="text-muted">{{ post.description }}</small>
+            </div>
+          </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
+
+{% block sidebar %}
+
+<div id="sidebar" class="content-section">
+        <p style="color:#1d5221";> <strong> Config file name including path: </strong></p>
+        <article class="media content-section">
+                  <div class="media-body">
+                        <div class="article-metadata">
+                            <input id="configFile" class="form-control" type="text" name="configFile" value="{{ configFileFullName }}"></input> 
+                            <label for="configFile" class="mr-2" style="margin-left: 10%; overflow: auto"></label>
+                        </div>            
+                  </div>
+        </article>
+        <div class="text-center">
+           <button class="btn btn-primary loadConfigButton">Load</button>
+        </div>
+</div>
+
+{% endblock sidebar %}
