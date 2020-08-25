@@ -18,17 +18,17 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 posts = [
     {
         'action': 'Validate',
-        'description': 'Validate input SQL Server CSV file',
+        'description': 'Validate input SQL Server connection CSV file to ensure all connection information provided are correct',
         'page': 'validate',
     },
     {
         'action': 'Assess',
-        'description': 'Asses your SQL Server feature parity and compability',
+        'description': 'Asses your SQL Server feature parity and compability against selected target platform',
         'page': 'assess',
     },
     {
         'action': 'Collect',
-        'description': 'Collect your SQL Server workload and cost estimation',
+        'description': 'Collect your SQL Server workload and make cost estimation based on the workload',
         'page': 'collect',
     },
     {

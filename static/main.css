@@ -1,7 +1,7 @@
 body {
     height: 100%;
     width: 100%;
-    background: #ece7e7;
+    background: #daf3f7ef;
     color: #333333;
     margin-top: 5rem;
     margin-bottom: 5rem;
@@ -12,7 +12,7 @@ body {
   }
 
   .bg-steel {
-    background-color: #5f788a;
+    background-color: #053e68;
   }
   
   .site-header .navbar-nav .nav-link {
@@ -88,7 +88,7 @@ body {
   }
   
   .form-control {
-    background-color: #bee4b6;
+    background-color: #07bed6;
   }
 
   .form-group-john {

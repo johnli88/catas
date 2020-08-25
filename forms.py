@@ -60,7 +60,14 @@ class AssessmentForm(FlaskForm):
                                  ('Evaluate', 'SQL Target Evaluation')], default=config['assess_type'])
     target = SelectField('Target platform', [DataRequired()],
                         choices=[('SQLdb', 'Azure SQL Database'),
-                                 ('SQLmi', 'Azure SQL Managed Instance')], default=config['target_platform'])
+                                 ('SQLmi', 'Azure SQL Managed Instance'),
+                                 ('SqlServer2012', 'SQL Server 2012'),
+                                 ('SqlServer2014', 'SQL Server 2014'),
+                                 ('SqlServer2016', 'SQL Server 2016'),
+                                 ('SqlServerLinux2017', 'SQL Server 2017 Linux'),
+                                 ('SqlServerWindows2017', 'SQL Server 2017 Windows'),
+                                 ('SqlServerLinux2019', 'SQL Server 2019 Linux'),
+                                 ('SqlServerWindows2019', 'SQL Server 2019 Windows')], default=config['target_platform'])
     print_config("Assessment form")
     submit = SubmitField('Assess')
 
