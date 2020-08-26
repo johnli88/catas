@@ -159,14 +159,11 @@ def validate():
         print("This is a POST.")
         if form.validate_on_submit():
             assessName = form.assessname.data
-            print(f"Assessment name: {assessName}")
             filename = form.filename.data
             #filename = secure_filename(form.filename.data.filename)
             print(f"csv file name: {filename}")
-            #form.filename.data.save('uploads/' + filename)
             validationType = form.validationType.data
             print(f"you chose: {validationType}")
-            flash(f'Start server connection validation ...', 'info')
             result = str(execute_script("catas.ps1", f"-AssessName {assessName} -InputFile {filename} -{validationType}"))
             if result[0:5] == "Error":
                 errorMessage = result if len(result) <= 200 else result[0:200]
@@ -236,7 +233,7 @@ def collect():
         print("dblist: ", dblist)
 
         if form.validate_on_submit():
-            print("collect forms validated!!!!!!!!!!!!!!")
+            print("collect forms validated!!")
             if (config['assess_type'] == 'workload'):
                 params = f"-AssessName {config['assess_name']} -InputFile {config['input_csv_file']} \
                           -OutputFolder {config['output_folder']} \

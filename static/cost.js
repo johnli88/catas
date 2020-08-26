@@ -28,6 +28,11 @@ $(document).ready(function() {
     }
 
     $('form').on('submit', async function() {
+        console.log("validated here.");
+        $('#spinner').show();
+     });
+
+    $('form').on('submit', async function() {
         console.log("submitted here.")
 		var total_time = getCollectionFormData('collection_form');
         // var collectTime = $('input#collectTime').val();
