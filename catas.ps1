@@ -126,7 +126,7 @@ function StandardizeInput
     return $serverList
 }
 
-function CheckOuput
+function CheckOutput
 {
     param
     (
@@ -154,7 +154,7 @@ function CheckOuput
     } else {
         $ReportName = $OutputFolder + "\" + $ReportName + "_" + $rightNow
     }
-    
+    #Write-Host "ReportName " $ReportName
     return $ReportName 
 }
 
@@ -358,8 +358,8 @@ if (!$AssessType) {
 
 
 # Set report folder & name
-$finalReport = CheckOuput #$OutputFolder $ReportName
-Write-Host $finalReport
+$finalReport = CheckOutput #$OutputFolder $ReportName
+Write-Host "finalReport " $finalReport
 
 # set target platform
 if (!$Target) {
@@ -388,7 +388,7 @@ Write-Host "Current location: " $savedPath
 
 if ($AssessType -eq 'workload' -or $AssessType -eq 'workloadsku') 
 {
-   $ResultFolder = CheckOuput -FolderOnly
+   $ResultFolder = CheckOutput -FolderOnly
    # Write-Host "Result folder: " $ResultFolder
    $dbConnectionString = ComposeDbConnection $serverList -Master
 
@@ -456,7 +456,7 @@ cd $DmaHome
 
 if ($AssessType -eq 'sku' -or $AssessType -eq 'workloadsku') 
 {
-   $ResultFolder = CheckOuput -FolderOnly
+   $ResultFolder = CheckOutput -FolderOnly
    # Write-Host "Result folder: " $ResultFolder
 
    # subscription ID must be provided
