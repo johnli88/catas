@@ -85,7 +85,7 @@ param
     [Parameter(Mandatory=$false)][int]$WorkloadTime = 3600,       # Workload collection time in seconds; default one hour and minimum 240
     [Parameter(Mandatory=$false)][string]$CountFile,              # Performance count file; required when SKU specified
     [Parameter(Mandatory=$false)][string]$CurrencyCode = "CAD",         # Currency code; required when SKU specified; default Canadian dollar
-    [Parameter(Mandatory=$false)][string]$OfferName="MS-AZR-0145P",     # Offer name; required when SKU specified; default CSP
+    [Parameter(Mandatory=$false)][string]$OfferName="MS-AZR-0003P",     # Offer name; required when SKU specified; default MS-AZR-0003P (MS-AZR-0145P: CSP)
     [Parameter(Mandatory=$false)][string]$RegionName="canadacentral",   # Geogrphic region; required when SKU specified; default Canada Central
     [Parameter(Mandatory=$false)][string]$SubscriptionId,               # Azure subscription ID; required when SKU specified
     [Parameter(Mandatory=$false)][string]$DatabaseNames,          # List of database names to be SKUed; default is all DBs "*"
