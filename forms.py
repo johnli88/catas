@@ -57,7 +57,8 @@ class AssessmentForm(FlaskForm):
                         choices=[('Both', 'SQL Feature Parity and Compatibility Level'),
                                  ('Feature', 'SQL Feature Parity'),                  
                                  ('Compat', 'SQL Compatibility Level'),
-                                 ('Evaluate', 'SQL Target Evaluation')], default=config['assess_type'])
+                                 ('Evaluate', 'SQL Target Evaluation'),
+                                 ('SSIS', 'SQL Server Integration Services')], default=config['assess_type'])
     target = SelectField('Target platform', [DataRequired()],
                         choices=[('SQLdb', 'Azure SQL Database'),
                                  ('SQLmi', 'Azure SQL Managed Instance'),
@@ -91,6 +92,9 @@ class AssessmentForm(FlaskForm):
 
     def validate_assessType(self, assessType):
         config['assess_type'] = assessType.data
+        if (self.assessType.data == 'SSIS'):
+            config['output_report_format'] = 'json'
+            self.reportFormat.data == 'json'
 
     def validate_target(self, target):
         config['target_platform'] = target.data

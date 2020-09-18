@@ -1,7 +1,12 @@
 ﻿<#
+.synaposis
+  This script allows user to assess on-preimises SQL Server databases before migrating to Azure
+
+.description
   This script is an extension of Microsoft DMA SkuRecommendationDataCollectionScript.ps1:
     - Allow remote server access with credentials
 
+.example
   Usage:
      # Validate all SQL server host connections
      catas.ps1 -AssessName "myAssessment" -InputFile C:\John\my-sql-server-list.csv -ValidateHost
@@ -44,6 +49,10 @@
           -AssessType WorkloadSKu -WorkloadTime 240 -SubscriptionId "0f81e775-f418-4020-a53f-013122a792b8" `
           -TenantId "7d270c48-208d-49f0-ade1-e658c4ef4f18" -ClientId "8dc6a081-3a6a-45e9-bc41-47550ee9aee2"
 
+    # assess SSIS packages
+    .\catas.ps1 -AssessName "myAssessment" -InputFile ".\sql-server-list.csv" -OutputFolder "C:\John\temp" `
+     -Target "SQLdb" -AssessType ssis
+
 
  Input File: CSV comma separate fields with following columns:
    Host: Mandatory; can be hostname, FQDN, or IP address
@@ -80,7 +89,7 @@ param
     [Parameter(Mandatory=$false)][switch]$ValidateHost = $false,
     [Parameter(Mandatory=$false)][switch]$ValidateSql = $false,
     [Parameter(Mandatory=$false)][switch]$ValidateBoth = $false,
-    [Parameter(Mandatory=$false)][string]$AssessType,             # type of assessment: Feature, Compat, Evaluate, Workload, Sku, WorkloadSku; defaul both Feature & Compat
+    [Parameter(Mandatory=$false)][string]$AssessType,             # type of assessment: Feature, Compat, Evaluate, Workload, Sku, WorkloadSku, ssis; defaul both Feature & Compat
     [Parameter(Mandatory=$false)][string]$DmaHome,                # DMA home director (default: C:\Program Files\Microsoft Data Migration Assistant)
     [Parameter(Mandatory=$false)][int]$WorkloadTime = 3600,       # Workload collection time in seconds; default one hour and minimum 240
     [Parameter(Mandatory=$false)][string]$CountFile,              # Performance count file; required when SKU specified
@@ -243,22 +252,24 @@ function ComposeDbConnection
         }
         Write-Host "sqlServer: " $sqlServer
 
-        if ($Master) {
+        if ($AssessType -eq 'ssis') {
+            $dbList = @("SSISDB")
+        } elseif ($Master) {
             $dbList = @("master")
         } else {
-          if ($server.DBlist -eq '*') {
-            # get all database names except system databases
-            if ($server.SqlUser) {
-                $dbName = Invoke-Sqlcmd -ServerInstance $sqlServer -Username $server.SqlUser -Password $server.SqlPassword -Database 'master' -Query "Select name from sys.databases where name not in ('master','model','msdb','tempdb')"
+            if ($server.DBlist -eq '*') {
+                # get all database names except system databases
+                if ($server.SqlUser) {
+                    $dbName = Invoke-Sqlcmd -ServerInstance $sqlServer -Username $server.SqlUser -Password $server.SqlPassword -Database 'master' -Query "Select name from sys.databases where name not in ('master','model','msdb','tempdb')"
+                } else {
+                    $dbName = Invoke-Sqlcmd -ServerInstance $sqlServer -Database 'master' -Query "Select name from sys.databases where name not in ('master','model','msdb','tempdb')"
+                }
+                # Write-Host "dbList: " $dbName.name
+                $dbList = $dbName.name
             } else {
-                $dbName = Invoke-Sqlcmd -ServerInstance $sqlServer -Database 'master' -Query "Select name from sys.databases where name not in ('master','model','msdb','tempdb')"
+                # convert database list into an array
+                $dbList = $server.DBlist -split ','
             }
-            # Write-Host "dbList: " $dbName.name
-            $dbList = $dbName.name
-          } else {
-            # convert database list into an array
-            $dbList = $server.DBlist -split ','
-          }
         }
 
         # loop through each database
@@ -547,13 +558,15 @@ if ($AssessType -eq 'sku' -or $AssessType -eq 'workloadsku')
 
 $dbConnectionString = ComposeDbConnection $serverList
 
-$cmd = ".\DmaCmd.exe /AssessmentName=""" + $AssessName+""" /AssessmentTargetPlatform=""" + $Target + """ /AssessmentResultDma=""" + "$finalReport.dma" + """ /AssessmentResultJson=""" + "$finalReport.json" + '"'
+#$cmd = ".\DmaCmd.exe /AssessmentName=""" + $AssessName+""" /AssessmentTargetPlatform=""" + $Target + """ /AssessmentResultDma=""" + "$finalReport.dma" + """ /AssessmentResultJson=""" + "$finalReport.json" + '"'
+$cmd = ".\DmaCmd.exe /AssessmentName=""" + $AssessName+""" /AssessmentTargetPlatform=""" + $Target + """ /AssessmentResultJson=""" + "$finalReport.json" + '"'
 Switch ($AssessType)
 {
-    'feature' {$cmd +=  " /AssessmentEvaluateFeatureParity /AssessmentDatabases=" + $dbConnectionString}
-    'compat' {$cmd +=  " /AssessmentEvaluateCompatibilityIssues /AssessmentDatabases=" + $dbConnectionString}
-    'evaluate' {$cmd +=  " /AssessmentEvaluateRecommendations /AssessmentDatabases=" + $dbConnectionString}
-    'both' {$cmd +=  " /AssessmentEvaluateFeatureParity /AssessmentEvaluateCompatibilityIssues /AssessmentDatabases=" + $dbConnectionString}
+    'feature' {$cmd +=  " /AssessmentResultDma=""" + "$finalReport.dma" + """  /AssessmentEvaluateFeatureParity /AssessmentDatabases=" + $dbConnectionString}
+    'compat' {$cmd +=  " /AssessmentResultDma=""" + "$finalReport.dma" + """  /AssessmentEvaluateCompatibilityIssues /AssessmentDatabases=" + $dbConnectionString}
+    'evaluate' {$cmd +=  " /AssessmentResultDma=""" + "$finalReport.dma" + """  /AssessmentEvaluateRecommendations /AssessmentDatabases=" + $dbConnectionString}
+    'both' {$cmd +=  " /AssessmentResultDma=""" + "$finalReport.dma" + """  /AssessmentEvaluateFeatureParity /AssessmentEvaluateCompatibilityIssues /AssessmentDatabases=" + $dbConnectionString}
+    'ssis' {$cmd +=  " /AssessmentType=IntegrationServices /AssessmentEvaluateCompatibilityIssues /AssessmentDatabases=" + $dbConnectionString}
     default {"Unknow Action: $AssessType"}
 }
 Write-Host $cmd

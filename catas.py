@@ -22,7 +22,7 @@ posts = [
         'page': 'validate',
     },
     {
-        'action': 'Assess',
+        'action': 'SQL Server',
         'description': 'Asses your SQL Server feature parity and compability against selected target platform',
         'page': 'assess',
     },
