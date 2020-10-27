@@ -275,7 +275,7 @@ function ComposeDbConnection
         # loop through each database
         foreach ($db in $dbList) {
             $dbName = $db.Trim()
-            If ($server.User) {
+            If ($server.SqlUser) {
                 $dbConnectList += """Server=" + $sqlServer + ";Integrated Security=False;User Id=" + $server.SqlUser + ";Password=" + $server.SqlPassword + ";Initial Catalog=" + $dbName + """ "
             } else {
                 $dbConnectList += """Server=" + $sqlServer + ";Integrated Security=True;Initial Catalog=" + $dbName + """ "
